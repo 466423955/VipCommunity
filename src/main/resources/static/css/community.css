@@ -1,3 +1,31 @@
+body {
+    padding-top: 64px;
+}
+
 .navigation-profile {
     float: right;
+}
+
+.topstoryHeader-right-nav {
+    cursor: pointer;
+    text-align: center;
+}
+
+.communit-share-table {
+    border: 1px solid #CCCCCC;
+    margin: 10px;
+}
+
+.communit-share-table .icon {
+    width: 32px;
+    height: 32px;
+    color: #CCCCCC;
+}
+
+.communit-share-table .header {
+    margin: 10px;
+}
+
+.communit-share-table .icon_words {
+
 }
