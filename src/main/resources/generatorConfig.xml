@@ -15,13 +15,14 @@
                         connectionURL="jdbc:mysql://localhost:3306/community?serverTimezone=GMT%2B8"
                         userId="root"
                         password="123456">
+            <property name="nullCatalogMeansCurrent" value="true" />
         </jdbcConnection>
 
         <javaTypeResolver >
             <property name="forceBigDecimals" value="false" />
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="hasaki.community.model" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.hasaki.vip.vipcommunity.model" targetProject="src/main/java">
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
@@ -30,12 +31,12 @@
             <property name="enableSubPackages" value="true" />
         </sqlMapGenerator>
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="hasaki.community.mapper"  targetProject="src/main/java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.hasaki.vip.vipcommunity.mapper"  targetProject="src/main/java">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
 
-        <table tableName="USER" domainObjectName="User" >
+        <table tableName="USER" domainObjectName="User" schema="community">
         </table>
     </context>
 </generatorConfiguration>
