@@ -5,7 +5,7 @@
 <body>
 
 <div th:fragment="nav">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top navigation-panel">
         <a class="navbar-brand h1" href="/" th:text="${@environment.getProperty('community-name')}"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,17 +39,47 @@
                     <img src="/icons/bell.svg" alt="" width="32" height="32" title="bell"></img>
                 </a>
             </div>
-            <div class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    个人信息
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">个人中心</a>
-                    <a class="dropdown-item" href="#">修改密码</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">退出登录</a>
-                </div>
+
+            <div class="navbar-nav mr-right">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown" th:if="${session.user != null}">
+
+                        <a class="nav-link" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+<!--                           th:text="${session.user.getName()}">-->
+                            <img th:src="${session.user.getAvartarurl()}" class="navigation-avartar">
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">个人中心</a>
+                            <a class="dropdown-item" href="#">修改密码</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/logout">退出登录</a>
+                        </div>
+                    </li>
+                    <li th:if="${session.user == null}">
+                        <a class="nav-link" href="/login">登录</a>
+                    </li>
+                </ul>
             </div>
+
+
+            <!--            <div class="nav-item dropdown">-->
+            <!--                <div class="dropdown" th:if="${session.user != null}">-->
+            <!--&lt;!&ndash;                    <img th:src="${session.user.getAvartarurl()}" class="navigation-avartar">&ndash;&gt;-->
+            <!--                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"-->
+            <!--                       aria-haspopup="true" aria-expanded="false" th:text="${session.user.getName() }">-->
+            <!--                    </a>-->
+            <!--                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">-->
+            <!--                        <a class="dropdown-item" href="#">个人中心</a>-->
+            <!--                        <a class="dropdown-item" href="#">修改密码</a>-->
+            <!--                        <div class="dropdown-divider"></div>-->
+            <!--                        <a class="dropdown-item" href="#">退出登录</a>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--                <div th:if="${session.user == null}">-->
+            <!--                    <a href="/login">登录</a>-->
+            <!--                </div>-->
+            <!--            </div>-->
         </div>
     </nav>
 </div>
