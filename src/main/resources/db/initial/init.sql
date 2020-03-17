@@ -1,0 +1,1 @@
+INSERT INTO user(ACCOUNT, EMAIL, NAME, PASSWORD, AVARTARURL) VALUE ('466423955@qq.com', '466423955@qq.com', 'Hasaki', '202cb962ac59075b964b07152d234b70', '/img/avatar/timg.jpg');
