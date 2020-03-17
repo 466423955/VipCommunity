@@ -13,9 +13,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private SessionInterceptor sessionInterceptor;
+    @Autowired
+    private LoginStatusInterceptor loginStatusInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(sessionInterceptor).addPathPatterns("/**");
+        registry.addInterceptor(loginStatusInterceptor).addPathPatterns("/ask");
     }
 }

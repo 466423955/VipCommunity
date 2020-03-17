@@ -38,5 +38,8 @@
 
         <table tableName="USER" domainObjectName="User" schema="community">
         </table>
+
+        <table tableName="QUESTION" domainObjectName="Question" schema="community">
+        </table>
     </context>
 </generatorConfiguration>

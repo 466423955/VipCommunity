@@ -40,3 +40,21 @@ function login_post() {
         dataType: "json"
     });
 }
+
+//选择话题标签
+function selectTag(value) {
+    var orignValue = $("#question-tag").val();
+    if(orignValue != null && orignValue != ""){
+        var values = orignValue.split(",");
+        if(values.indexOf(value) >= 0){
+            while (values.indexOf(value) >= 0){
+                values.splice(values.indexOf(value), 1);
+            }
+        } else {
+            values.push(value);
+        }
+        $("#question-tag").val(values.join(","));
+    } else {
+        $("#question-tag").val(value);
+    }
+}

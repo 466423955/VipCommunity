@@ -1,0 +1,137 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${@environment.getProperty('community-name')}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/community.css">
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script src="js/community.js"></script>
+</head>
+
+<body>
+<!--JS显示标签div-->
+<script type="application/javascript">
+    $("body").on("click", function (e) {
+        var e = e || window.event; //浏览器兼容性
+        var elem = e.target || e.srcElement;
+        while (elem) { //循环判断至跟节点，防止点击的是div子元素
+            if (elem.id && elem.id == 'tag-div') {
+                $("#selectTag").show();
+                return;
+            }
+            elem = elem.parentNode;
+        }
+        $("#selectTag").hide();
+    });
+</script>
+
+<!--导航-->
+<div th:insert="navigation :: nav"></div>
+
+<div class="container">
+    <!--面包屑导航-->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/asklist">问答</a></li>
+            <li class="breadcrumb-item active" aria-current="page">提问</li>
+        </ol>
+    </nav>
+    <div class="row">
+        <!--提问内容-->
+        <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
+            <input id="question-id" name="question-id" type="hidden">
+            <div class="form-group">
+                <label for="question-title">问题标题（简单扼要）：</label>
+                <input type="text" class="form-control" id="question-title" name="question-title"
+                       placeholder="您需要用简明扼要的语言在这里将问题描述清楚，以便更好地获得答案。">
+            </div>
+            <div class="form-group">
+                <label for="question-description">问题补充（必填请参照右侧提示）：</label>
+                <textarea id="question-description" name="question-description" cols="30" rows="10" class="form-control"
+                          placeholder="如果问题标题不足以描述清楚您的困惑，您可以在此处详细展开，并可以插入图片来帮助问题回答者更好地理解您的疑惑，更有针对性地帮助您。"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="question-tag">添加话题：</label>
+                <div id="tag-div">
+                    <input type="text" class="form-control" id="question-tag" name="question-tag"
+                           placeholder="添加话题（0/5）" autocomplete="off">
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-10 col-lg-10 col-xl-10">
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-danger"
+                                 th:if="${error != null}" th:text="${error}"></div>
+                            <!--话题-->
+                            <div id="selectTag" class="selectTag">
+                                <ul class="mb-3 nav nav-pills" id="pills-tab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home"
+                                           role="tab" aria-controls="pills-home" aria-selected="true">开发语言</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile"
+                                           role="tab" aria-controls="pills-profile" aria-selected="false">平台框架</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact"
+                                           role="tab" aria-controls="pills-contact" aria-selected="false">Contact</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="pills-tabContent">
+                                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
+                                         aria-labelledby="pills-home-tab">
+                                        <a class="badge badge-info" onclick="selectTag('Java')"><img src="/icons/tag.svg" class="badge-img">Java</a>
+                                        <a class="badge badge-info" onclick="selectTag('C++')"><img src="/icons/tag.svg" class="badge-img">C++</a>
+                                    </div>
+                                    <div class="tab-pane fade" id="pills-profile" role="tabpanel"
+                                         aria-labelledby="pills-profile-tab">
+                                        <a href="#" class="badge badge-info">Spring Boot</a>
+                                        <a href="#" class="badge badge-info">BootStrap</a>
+                                    </div>
+                                    <div class="tab-pane fade" id="pills-contact" role="tabpanel"
+                                         aria-labelledby="pills-contact-tab">
+                                        <a href="#" class="badge badge-info">中文</a>
+                                        <a href="#" class="badge badge-info">中英abc</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+                            <button type="submit" class="btn btn-primary btn-publish">发布</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!--提问建议-->
+        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+            <ul style="padding-left: 10px">
+                <li>
+                    <h6 class="ask-advice"><strong>善用搜索功能</strong></h6>
+                    <h7>当您的提问已经在社区中被人提出过了，那么重复的问题将较少得到回答者的关注，建议您查看近似问题并获取排序靠前的高质量回答。</h7>
+                </li>
+                <li>
+                    <h6 class="ask-advice"><strong>提问题应简要明确</strong></h6>
+                    <h7>长篇大论且没有重点的问题，无法让回答者快速、深入的理解您想要表达的意思，有指向性的问题才能够帮助您获得更有用的回答。</h7>
+                </li>
+                <li>
+                    <h6 class="ask-advice"><strong>问题不宜太过广泛</strong></h6>
+                    <h7>太广泛的问题往往让回答者无从下手。提问时应尽量提供问题相关的详细背景信息，用他人能够理解、具体的词句，回答者更容易对你的问题作出较为全面的解答。</h7>
+                </li>
+                <li>
+                    <h6 class="ask-advice"><strong>给问题添加一个准确的话题</strong></h6>
+                    <h7>当您的问题匹配到对应的话题时，关注该话题的人才能看到您的问题，进而作出回答。
+                        提问题的过程，是您对于问题进行的再次思考和挖掘，能够锻炼一个人的思维能力，学会更好的提问，可以帮助我们成为更好的人。
+                    </h7>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>
