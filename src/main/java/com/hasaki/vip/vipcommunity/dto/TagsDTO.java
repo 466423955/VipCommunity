@@ -5,6 +5,6 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class AskDTO {
+public class TagsDTO {
     private List<TagDTO> tagDTOs;
 }
