@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hasaki.vip.vipcommunity.mapper.QuestionExtMapper">
+  <insert id="insertAndUseId" parameterType="com.hasaki.vip.vipcommunity.model.Question" useGeneratedKeys="true" keyProperty="id">
+    insert into question (id, title, gmt_create, 
+      gmt_modify, creator, reply_count, 
+      view_count, like_count, tag, 
+      description)
+    values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=BIGINT}, 
+      #{gmtModify,jdbcType=BIGINT}, #{creator,jdbcType=BIGINT}, #{replyCount,jdbcType=INTEGER}, 
+      #{viewCount,jdbcType=INTEGER}, #{likeCount,jdbcType=INTEGER}, #{tag,jdbcType=VARCHAR}, 
+      #{description,jdbcType=LONGVARCHAR})
+  </insert>
+</mapper>

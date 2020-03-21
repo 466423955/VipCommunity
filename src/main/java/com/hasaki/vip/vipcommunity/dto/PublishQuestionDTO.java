@@ -7,6 +7,7 @@ import lombok.Data;
  */
 @Data
 public class PublishQuestionDTO {
+    private Long id;
     private String title;
     private String Content;
     private String[] tags;

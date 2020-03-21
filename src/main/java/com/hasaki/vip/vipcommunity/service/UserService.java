@@ -50,4 +50,11 @@ public class UserService {
         BeanUtils.copyProperties(user, userDTO);
         return userDTO;
     }
+
+    public UserDTO getUserDTOById(Long userId){
+        User user = userMapper.selectByPrimaryKey(userId);
+        UserDTO userDTO = new UserDTO();
+        BeanUtils.copyProperties(user, userDTO);
+        return userDTO;
+    }
 }
