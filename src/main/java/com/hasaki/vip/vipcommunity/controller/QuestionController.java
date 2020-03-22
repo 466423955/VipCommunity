@@ -31,7 +31,7 @@ public class QuestionController {
 
     @ResponseBody
     @PostMapping("/ask")
-    public Object login(@RequestBody PublishQuestionDTO publishQuestionDTO,
+    public Object publish(@RequestBody PublishQuestionDTO publishQuestionDTO,
                         @RequestHeader HttpHeaders headers,
                         HttpServletRequest request) {
         if (publishQuestionDTO.getTitle() == null || publishQuestionDTO.getTitle() == "") {

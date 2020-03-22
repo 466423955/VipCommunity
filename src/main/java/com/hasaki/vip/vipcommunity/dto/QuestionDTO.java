@@ -8,4 +8,5 @@ import lombok.Data;
 public class QuestionDTO {
     private Question question;
     private UserDTO user;
+    private boolean isFollowed;
 }
