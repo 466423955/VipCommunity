@@ -8,12 +8,14 @@ import com.hasaki.vip.vipcommunity.mapper.QuestionExtMapper;
 import com.hasaki.vip.vipcommunity.mapper.QuestionMapper;
 import com.hasaki.vip.vipcommunity.model.Follow;
 import com.hasaki.vip.vipcommunity.model.Question;
+import com.hasaki.vip.vipcommunity.model.QuestionExample;
 import com.hasaki.vip.vipcommunity.model.User;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,14 +29,14 @@ public class QuestionService {
     @Autowired
     private FollowService followService;
 
-    public Question createOrUpdate(PublishQuestionDTO publishQuestionDTO, User user){
+    public Question createOrUpdate(PublishQuestionDTO publishQuestionDTO, User user) {
         Question question_db = questionMapper.selectByPrimaryKey(publishQuestionDTO.getId());
-        if(question_db == null){
+        if (question_db == null) {
             //create
             question_db = new Question();
             question_db.setTitle(publishQuestionDTO.getTitle());
             question_db.setDescription(publishQuestionDTO.getContent());
-            question_db.setTag(StringUtils.join(publishQuestionDTO.getTags(),','));
+            question_db.setTag(StringUtils.join(publishQuestionDTO.getTags(), ','));
             question_db.setCreator(user.getId());
             question_db.setGmtCreate(System.currentTimeMillis());
             question_db.setGmtModify(System.currentTimeMillis());
@@ -49,7 +51,7 @@ public class QuestionService {
             question.setId(question_db.getId());
             question.setTitle(publishQuestionDTO.getTitle());
             question.setDescription(publishQuestionDTO.getContent());
-            question.setTag(StringUtils.join(publishQuestionDTO.getTags(),','));
+            question.setTag(StringUtils.join(publishQuestionDTO.getTags(), ','));
             question.setGmtModify(System.currentTimeMillis());
             questionMapper.updateByPrimaryKey(question);
             return questionMapper.selectByPrimaryKey(publishQuestionDTO.getId());
@@ -61,12 +63,12 @@ public class QuestionService {
         QuestionDTO questionDTO = new QuestionDTO();
         Question question = questionMapper.selectByPrimaryKey(questionId);
         questionDTO.setQuestion(question);
-        if(question == null){
+        if (question == null) {
             return questionDTO;
         }
         UserDTO userDTO = userService.getUserDTOById(question.getCreator());
         questionDTO.setUser(userDTO);
-        if(userDTO == null){
+        if (userDTO == null) {
             return questionDTO;
         }
         Follow follow = new Follow();
@@ -76,6 +78,28 @@ public class QuestionService {
         List<Follow> sameFollowLog = followService.getSameFollowLog(follow);
         questionDTO.setFollowed(sameFollowLog != null && sameFollowLog.size() > 0);
         return questionDTO;
+    }
+
+    public List<QuestionDTO> getQuestionDTOs() {
+        List<QuestionDTO> questionDTOS = new ArrayList<>();
+        List<Question> questions = questionMapper.selectByExampleWithBLOBs(new QuestionExample());
+        for (Question item : questions) {
+            QuestionDTO questionDTO = new QuestionDTO();
+            questionDTO.setQuestion(item);
+            UserDTO userDTO = userService.getUserDTOById(item.getCreator());
+            questionDTO.setUser(userDTO);
+            if (userDTO == null) {
+                continue;
+            }
+            Follow follow = new Follow();
+            follow.setUserId(userDTO.getId());
+            follow.setFollowType(FollowType.QUESTION.getType());
+            follow.setFollowId(item.getId());
+            List<Follow> sameFollowLog = followService.getSameFollowLog(follow);
+            questionDTO.setFollowed(sameFollowLog != null && sameFollowLog.size() > 0);
+            questionDTOS.add(questionDTO);
+        }
+        return questionDTOS;
     }
 
     public void followCountUpdate(Long questionId, int count) {

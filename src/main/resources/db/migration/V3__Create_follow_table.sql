@@ -5,5 +5,5 @@ create table follow
 	follow_type int not null,
 	follow_id bigint not null,
 	gmt_create bigint
-);
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 

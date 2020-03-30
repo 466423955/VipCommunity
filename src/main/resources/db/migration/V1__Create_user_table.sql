@@ -16,5 +16,5 @@ create table USER
 	FOLLOW_COUNT INT DEFAULT 0 comment '关注者（被关注数）',
 	QUESTION_COUNT INT DEFAULT 0 comment '问题数',
 	ARTICLE_COUNT INT DEFAULT 0  comment '文章数'
-);
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 

@@ -64,4 +64,10 @@ public class QuestionController {
         }
         return ResponseResultDTO.successOf(questionDTO);
     }
+
+    @ResponseBody
+    @GetMapping("/questionlist")
+    public Object getQuestionList() {
+        return ResponseResultDTO.successOf(questionService.getQuestionDTOs());
+    }
 }
