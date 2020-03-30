@@ -59,6 +59,9 @@ public class QuestionController {
     @GetMapping("/question/{id}")
     public Object getQuestionById(@PathVariable(name = "id") Long id) {
         QuestionDTO questionDTO = questionService.getQuestionDTOById(id);
+        if(questionDTO == null || questionDTO.getQuestion() == null) {
+            return ResponseResultDTO.errorOf(CustomizeErrorCode.QUESTION_NOTEXIST);
+        }
         return ResponseResultDTO.successOf(questionDTO);
     }
 }

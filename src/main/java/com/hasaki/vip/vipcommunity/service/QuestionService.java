@@ -61,8 +61,14 @@ public class QuestionService {
         QuestionDTO questionDTO = new QuestionDTO();
         Question question = questionMapper.selectByPrimaryKey(questionId);
         questionDTO.setQuestion(question);
+        if(question == null){
+            return questionDTO;
+        }
         UserDTO userDTO = userService.getUserDTOById(question.getCreator());
         questionDTO.setUser(userDTO);
+        if(userDTO == null){
+            return questionDTO;
+        }
         Follow follow = new Follow();
         follow.setUserId(userDTO.getId());
         follow.setFollowType(FollowType.QUESTION.getType());

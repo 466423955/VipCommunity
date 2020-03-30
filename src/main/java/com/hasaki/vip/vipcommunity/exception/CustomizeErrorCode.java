@@ -17,7 +17,8 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode {
     //问题模块
     QUESTION_TITLE_EMPTY(2001, "问题标题不能为空"),
     QUESTION_CONTENT_EMPTY(2002, "问题描述不能为空"),
-    QUESTION_TAG_EMPTY(2003, "问题标签不能为空")
+    QUESTION_TAG_EMPTY(2003, "问题标签不能为空"),
+    QUESTION_NOTEXIST(2004, "查找的问题不存在")
 
     ;
 
