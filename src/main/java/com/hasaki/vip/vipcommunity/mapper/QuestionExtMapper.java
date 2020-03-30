@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface QuestionExtMapper {
     int insertAndUseId(Question record);
+    void updateFollowCountInc(Long id, int count);
 }

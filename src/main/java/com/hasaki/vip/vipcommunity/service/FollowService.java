@@ -2,12 +2,12 @@ package com.hasaki.vip.vipcommunity.service;
 
 import com.hasaki.vip.vipcommunity.enums.FollowType;
 import com.hasaki.vip.vipcommunity.mapper.FollowMapper;
-import com.hasaki.vip.vipcommunity.mapper.QuestionMapper;
 import com.hasaki.vip.vipcommunity.model.Follow;
 import com.hasaki.vip.vipcommunity.model.FollowExample;
 import com.hasaki.vip.vipcommunity.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,27 +16,37 @@ public class FollowService {
     @Autowired
     private FollowMapper followMapper;
     @Autowired
-    private QuestionMapper questionMapper;
+    private QuestionService questionService;
 
-    public boolean isFollowObjectExist(Follow follow){
-        if(follow.getFollowType() == FollowType.QUESTION.getType()){
-            Question question = questionMapper.selectByPrimaryKey(follow.getFollowId());
-            return question != null;
+    public Object isFollowObjectExist(Follow follow) {
+        if (follow.getFollowType() == FollowType.QUESTION.getType()) {
+            Question question = questionService.selectByPrimaryKey(follow.getFollowId());
+            return question;
         }
-        return false;
+        return null;
     }
 
-    public List<Follow> getSameFollowLog(Follow follow){
+    public List<Follow> getSameFollowLog(Follow follow) {
         FollowExample followExample = new FollowExample();
         followExample.createCriteria().andFollowIdEqualTo(follow.getFollowId()).andFollowTypeEqualTo(follow.getFollowType()).andUserIdEqualTo(follow.getUserId());
         return followMapper.selectByExample(followExample);
     }
 
-    public void insert(Follow follow){
+    @Transactional
+    public void executeFollow(Follow follow) {
+        if (follow.getFollowType() == FollowType.QUESTION.getType()) {
+            this.questionService.followCountUpdate(follow.getFollowId(), 1);
+        }
         followMapper.insert(follow);
     }
 
-    public void deleteById(Long followId) {
-        followMapper.deleteByPrimaryKey(followId);
+    @Transactional
+    public void executeUnFollow(List<Follow> follows) {
+        for (Follow follow : follows) {
+            if (follow.getFollowType() == FollowType.QUESTION.getType()) {
+                this.questionService.followCountUpdate(follow.getFollowId(), -1);
+            }
+            followMapper.deleteByPrimaryKey(follow.getId());
+        }
     }
 }

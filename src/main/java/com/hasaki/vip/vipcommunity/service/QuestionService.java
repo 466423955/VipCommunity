@@ -77,4 +77,12 @@ public class QuestionService {
         questionDTO.setFollowed(sameFollowLog != null && sameFollowLog.size() > 0);
         return questionDTO;
     }
+
+    public void followCountUpdate(Long questionId, int count) {
+        this.questionExtMapper.updateFollowCountInc(questionId, count);
+    }
+
+    public Question selectByPrimaryKey(Long questionId) {
+        return this.questionMapper.selectByPrimaryKey(questionId);
+    }
 }

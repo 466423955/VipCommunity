@@ -71,8 +71,8 @@ public class UserController {
     @ResponseBody
     @PostMapping("/follow")
     public Object follow(@RequestBody FollowObjectDTO followObjectDTO,
-                        @RequestHeader HttpHeaders headers,
-                        HttpServletRequest request) {
+                         @RequestHeader HttpHeaders headers,
+                         HttpServletRequest request) {
         if (followObjectDTO.getObjectType() == null || followObjectDTO.getObjectType() == "") {
             return ResponseResultDTO.errorOf(CustomizeErrorCode.USER_FOLLOW_TYPE_EMPTY);
         }
@@ -90,23 +90,24 @@ public class UserController {
         follow.setFollowId(followObjectDTO.getObjectId());
         follow.setGmtCreate(System.currentTimeMillis());
 
-        if(!followService.isFollowObjectExist(follow)){
+        Object followObject = followService.isFollowObjectExist(follow);
+        if (followObject == null) {
             return ResponseResultDTO.errorOf(CustomizeErrorCode.USER_FOLLOW_OBJECT_NOTEXIST);
         }
         List<Follow> sameFollowLog = followService.getSameFollowLog(follow);
-        if(sameFollowLog != null && sameFollowLog.size() > 0){
+        if (sameFollowLog != null && sameFollowLog.size() > 0) {
             return ResponseResultDTO.errorOf(CustomizeErrorCode.USER_FOLLOW_DUPLICATE);
         }
 
-        followService.insert(follow);
+        followService.executeFollow(follow);
         return ResponseResultDTO.successOf();
     }
 
     @ResponseBody
     @PostMapping("/unfollow")
     public Object unfollow(@RequestBody FollowObjectDTO followObjectDTO,
-                        @RequestHeader HttpHeaders headers,
-                        HttpServletRequest request) {
+                           @RequestHeader HttpHeaders headers,
+                           HttpServletRequest request) {
         if (followObjectDTO.getObjectType() == null || followObjectDTO.getObjectType() == "") {
             return ResponseResultDTO.errorOf(CustomizeErrorCode.USER_FOLLOW_TYPE_EMPTY);
         }
@@ -124,11 +125,11 @@ public class UserController {
         follow.setFollowId(followObjectDTO.getObjectId());
 
         List<Follow> sameFollowLog = followService.getSameFollowLog(follow);
-        if(sameFollowLog == null || sameFollowLog.size() == 0){
+        if (sameFollowLog == null || sameFollowLog.size() == 0) {
             return ResponseResultDTO.errorOf(CustomizeErrorCode.USER_FOLLOW_LOG_NOTEXIST);
         }
 
-        sameFollowLog.forEach(item->followService.deleteById(item.getId()));
+        followService.executeUnFollow(sameFollowLog);
         return ResponseResultDTO.successOf();
     }
 }
